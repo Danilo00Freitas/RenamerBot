@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class ArchiveManager {
@@ -25,21 +26,25 @@ public class ArchiveManager {
                 Files.createDirectories(newDirectoryPath);
             }
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             // Use a API Stream para listar todos os arquivos.
             Files.list(path)
                     .filter(Files::isRegularFile)
                     .forEach(sourceFile -> {
                         // Construindo o caminho de destino para o arquivo
 
-                        String newFileName = fileName + LocalTime.now().toString().replace(":","");
+                        String newFileName = fileName + LocalTime.now().format(formatter).replace(":","");
                         Path renamedFile = newDirectoryPath.resolve(newFileName);
 
                         try {
                             // Copiando o arquivo de origem para o destino
                             Files.copy(sourceFile, renamedFile, StandardCopyOption.REPLACE_EXISTING);
                             System.out.println("Arquivo copiado: " + renamedFile.getFileName());
+                            Thread.sleep(1000);
                         } catch (IOException e) {
                             System.err.println("Erro ao copiar arquivo: " + e.getMessage());
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
                     });
 
