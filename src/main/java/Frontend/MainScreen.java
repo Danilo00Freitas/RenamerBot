@@ -85,7 +85,7 @@ public class MainScreen extends JFrame {
                 System.out.println(fileDir);
 
                 ArchiveManager archiveManager = new ArchiveManager(fileDir);
-                archiveManager.fileCopier();
+                archiveManager.fileCopier(fileName);
 
             }
         });
