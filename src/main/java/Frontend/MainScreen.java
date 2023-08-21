@@ -1,5 +1,7 @@
 package Frontend;
 
+import Backend.ArchiveManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +11,7 @@ public class MainScreen extends JFrame {
     private JPanel mainPanel = new JPanel();
     private JFileChooser fileChooser = new JFileChooser();
     private String namePattern = "MOV_NG_";
+    private String dirName;
 
     private String fileName;
     private String fileDir;
@@ -76,10 +79,13 @@ public class MainScreen extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 fileName = namePattern + informCollectDate.getText() + "_" + informArchiveDate.getText();
                 fileDir = fileChooser.getSelectedFile().toString();
+                dirName = fileDir + "Renomeados";
 
                 System.out.println(fileName);
                 System.out.println(fileDir);
 
+                ArchiveManager archiveManager = new ArchiveManager(fileDir);
+                archiveManager.fileCopier();
 
             }
         });
