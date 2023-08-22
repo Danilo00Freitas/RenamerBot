@@ -26,21 +26,21 @@ public class ArchiveManager {
                 Files.createDirectories(newDirectoryPath);
             }
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss:SS");
             // Use a API Stream para listar todos os arquivos.
             Files.list(path)
                     .filter(Files::isRegularFile)
                     .forEach(sourceFile -> {
                         // Construindo o caminho de destino para o arquivo
 
-                        String newFileName = fileName + LocalTime.now().format(formatter).replace(":","");
+                        String newFileName = fileName + LocalTime.now().format(formatter).replace(":","") + ".csv";
                         Path renamedFile = newDirectoryPath.resolve(newFileName);
 
                         try {
                             // Copiando o arquivo de origem para o destino
                             Files.copy(sourceFile, renamedFile, StandardCopyOption.REPLACE_EXISTING);
                             System.out.println("Arquivo copiado: " + renamedFile.getFileName());
-                            Thread.sleep(1000);
+                            Thread.sleep(200);
                         } catch (IOException e) {
                             System.err.println("Erro ao copiar arquivo: " + e.getMessage());
                         } catch (InterruptedException e) {
